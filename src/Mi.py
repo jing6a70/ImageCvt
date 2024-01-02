@@ -3,10 +3,10 @@
 
 import sys
 
-from PySide2 import QtCore
-from PySide2.QtGui import QPixmap
-from PySide2.QtWidgets import QWidget, QDesktopWidget, QApplication, QFileDialog, QTableWidget, QTableWidgetItem, QLabel
-from PySide2.QtUiTools import QUiLoader
+from PySide6 import QtCore
+from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QWidget, QApplication, QFileDialog, QTableWidget, QTableWidgetItem, QLabel
+from PySide6.QtUiTools import QUiLoader
 from ImageJpg import *
 
 
@@ -24,7 +24,7 @@ class QtApp(QWidget):
         self.LoaderUi()
 
     def LoaderUi(self):
-        self.ui = QUiLoader().load('Ui/main1.ui')
+        self.ui = QUiLoader().load('../res/main1.ui')
 
 
         self.ui.lable_image_pre.setScaledContents(True)
@@ -47,8 +47,8 @@ class QtApp(QWidget):
 
     def center(self):
         qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
+        # cp = QDesktopWidget().availableGeometry().center()
+        # qr.moveCenter(cp)
         self.move(qr.topLeft())
 
     def on_btn_src_path_clicked(self):

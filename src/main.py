@@ -20,13 +20,13 @@ def qt():
     w.setWindowTitle('图像转换工具')
     w.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 def main():
     app = QApplication(sys.argv)
     ex = QtApp()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     main()
