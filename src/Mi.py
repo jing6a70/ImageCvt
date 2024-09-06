@@ -26,7 +26,6 @@ class QtApp(QWidget):
     def LoaderUi(self):
         self.ui = QUiLoader().load('../res/main1.ui')
 
-
         self.ui.lable_image_pre.setScaledContents(True)
 
         # 基本属性设置 : tableWidget
@@ -63,7 +62,7 @@ class QtApp(QWidget):
 
             for i in range(len(dir_file_list)):
                 self.ui.tableWidget.setItem(i, 0, QTableWidgetItem(dir_file_list[i]))
-                self.ui.tableWidget.setItem(i, 1, QTableWidgetItem(directory_path + dir_file_list[i]))
+                self.ui.tableWidget.setItem(i, 1, QTableWidgetItem(directory_path + "/" + dir_file_list[i]))
 
     def on_btn_dst_path_clicked(self):
         directory_path = QFileDialog.getExistingDirectory(self, "请选择文件夹", "./")
@@ -87,9 +86,15 @@ class QtApp(QWidget):
         pass
 
     def on_tableWidget_cell_clicked(self, row, column):
-        item = self.ui.tableWidget.item(row, column)
-        pixmap = QPixmap(item.text())
-        # self.ui.lable_image_pre.setText("test")
-        self.ui.lable_image_pre.setPixmap(pixmap)
-        self.ui.lable_image_pre.show()
+
+        item = self.ui.tableWidget.item(row, 1)
+        pixmap = QPixmap()
+        pixmap.load(item.text())
+
+        if pixmap.isNull() == False:
+            self.ui.lable_image_pre.setPixmap(pixmap)
+            self.ui.lable_image_pre.show()
+        else:
+            print("pixmap is null")
+
         print("row: {0} column: {1} text: {2}" .format(row, column, item.text()))
