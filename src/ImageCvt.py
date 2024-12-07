@@ -6,7 +6,6 @@
 import os
 from PIL import Image
 from enum import Enum
-from PImageCvt import Image_convert
 
 class IMGCVT_OUT_TYPE(Enum):
     IMG_BMP = 0
@@ -27,7 +26,7 @@ class ImageCvt():
                             ".bmp" :IMGCVT_OUT_TYPE.IMG_BMP,
                             ".jpg" :IMGCVT_OUT_TYPE.IMG_JPG,
                             ".jpeg":IMGCVT_OUT_TYPE.IMG_JPEG,
-                            ".jpg" :IMGCVT_OUT_TYPE.IMG_PNG,
+                            ".png" :IMGCVT_OUT_TYPE.IMG_PNG,
                           }
 
 
@@ -40,24 +39,6 @@ class ImageCvt():
             self._dst_dir = path_dst
             self._src_dir = path_src
             self._out_type = IMGCVT_OUT_TYPE.IMG_BMP
-
-    def __init__(self, path_dst, path_src, out_type):
-        if len(path_dst) != 0 and len(path_src) != 0:
-            self.init_gen()
-            self._dst_dir = path_dst
-            self._src_dir = path_src
-            self._out_type = out_type
-            self._output_w = output_w = 0
-            self._output_h = output_h = 0
-
-    def __init__(self, path_dst, path_src, out_type, output_w, output_h):
-        if len(path_dst) != 0 and len(path_src) != 0:
-            self.init_gen()
-            self._dst_dir = path_dst
-            self._src_dir = path_src
-            self._out_type = out_type
-            self._output_w = output_w
-            self._output_h = output_h
 
     def set_dst_dir(self, dst_dir):
         self._dst_dir = dst_dir
@@ -72,8 +53,14 @@ class ImageCvt():
         res = None
         # res = list(self._type_map.keys())[list(self._type_map.values()).index(val)]
         for map_str, map_key in self._type_map.items():
+            print("str = ", map_str)
+            print("key = ", map_key)
             if map_key == val:
                 res = map_str
+                print("str ok = ", map_str)
+                print("key ok = ", map_key)
+                break
+            print("\n")
         return res
 
     def get_str_output_type_name(self):
@@ -81,27 +68,30 @@ class ImageCvt():
 
     def toBmp(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_BMP
-        self.cvt(IMGCVT_OUT_TYPE.IMG_BMP, 0)
+        self.cvt(self._out_type, 0)
 
     def toJPG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_JPG
+        self.cvt(self._out_type, 0)
 
     def toJPEG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_JPEG
+        self.cvt(self._out_type, 0)
 
     def toPNG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_PNG
+        self.cvt(self._out_type, 0)
 
-    def cvt(self):
-        pass
 
 
     def cvt(self, dst_type, src_type):
         convert_count = 0
+        # 查询类型是否于列表
+        print("is_map_pic para: ", dst_type)
         if self.is_map_pic(dst_type) is None:
             print("ImageCvt() : 转换类型错误!!!")
             return
-
+        # 判断源文件夹与目标文件夹是否为空
         if len(self._src_dir) != 0 and len(self._dst_dir) != 0:
             try:
                 self.dir_list = os.listdir(self._src_dir)
@@ -130,7 +120,7 @@ class ImageCvt():
                     img = Image.open(self._src_dir + "/" + fileName)
                     img.save(self._dst_dir + "/" + newFileName)
                     convert_count += 1
-                    print(f" {fileName} \t\t\t 转换为: {newFileName}")
+                    # print(f" {fileName} \t\t\t 转换为: {newFileName}")
             return True
         else:
             return False

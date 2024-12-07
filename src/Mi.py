@@ -50,7 +50,6 @@ class QtApp(QWidget):
         self.ui.btn_startc.clicked.connect(self.on_btn_startc_clicked)
         self.ui.btn_quit.clicked.connect(self.on_btn_quit_clicked)
         self.ui.tableWidget.cellClicked.connect(self.on_tableWidget_cell_clicked)
-        self.ui.btn_lock.clicked.connect(self.on_btn_lock_clicked)
 
         self.center()
         self.ui.setWindowTitle("PicIC")
@@ -91,13 +90,18 @@ class QtApp(QWidget):
             return False
 
         info_index = self.ui.comboBox_targetType.currentIndex()
-        info_output_w = self.ui.lineEdit_output_w.text()
-        info_output_h = self.ui.lineEdit_output_h.text()
-        print("info_index : {0}" .format(info_index))
-        print("info_output_w : {0}" .format(info_output_w))
-        print("info_output_h : {0}" .format(info_output_h))
-        imghanle = ImageCvt(self.ui.label_dst_path.text(), self.ui.label_src_path.text(), IMGCVT_OUT_TYPE.IMG_JPG, 0, 0)
-        imghanle.toBmp()
+
+        imghanle = ImageCvt(self.ui.label_dst_path.text(), self.ui.label_src_path.text())
+
+        if info_index == IMGCVT_OUT_TYPE.IMG_BMP.value:
+            imghanle.toBmp()
+        elif info_index == IMGCVT_OUT_TYPE.IMG_JPG.value:
+            imghanle.toJPG()
+        elif info_index == IMGCVT_OUT_TYPE.IMG_JPEG.value:
+            imghanle.toJPEG()
+        elif info_index == IMGCVT_OUT_TYPE.IMG_PNG.value:
+            imghanle.toPNG()
+
         return True
 
     def on_btn_quit_clicked(self):
@@ -116,20 +120,3 @@ class QtApp(QWidget):
             print("pixmap is null")
 
         print("row: {0} column: {1} text: {2}" .format(row, column, item.text()))
-
-    def on_btn_lock_clicked(self):
-        info_btn = self.ui.btn_lock.text()
-        info_output_w = self.ui.lineEdit_output_w.text()
-        info_output_h = self.ui.lineEdit_output_h.text()
-
-        if info_btn == "-":
-            info_btn = "&&"
-        elif info_btn == "&&":
-            info_btn = "-"
-        else:
-            info_btn = "-"
-        self.ui.btn_lock.setText(info_btn)
-
-        print("info_output_w : {0}".format(info_output_w))
-        print("info_output_h : {0}".format(info_output_h))
-
