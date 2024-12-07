@@ -24,6 +24,8 @@ def qt():
 
 
 def main():
+
+
     app = QApplication(sys.argv)
     ex = QtApp()
     sys.exit(app.exec())

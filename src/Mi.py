@@ -7,7 +7,7 @@ from PySide6 import QtCore
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget, QApplication, QFileDialog, QTableWidget, QTableWidgetItem, QLabel
 from PySide6.QtUiTools import QUiLoader
-from ImageJpg import *
+from ImageCvt import *
 from enum import Enum
 
 
@@ -96,8 +96,8 @@ class QtApp(QWidget):
         print("info_index : {0}" .format(info_index))
         print("info_output_w : {0}" .format(info_output_w))
         print("info_output_h : {0}" .format(info_output_h))
-        jpg = ImageJpg(self.ui.label_dst_path.text(), self.ui.label_src_path.text())
-        # jpg.toBmp()
+        imghanle = ImageCvt(self.ui.label_dst_path.text(), self.ui.label_src_path.text(), IMGCVT_OUT_TYPE.IMG_JPG, 0, 0)
+        imghanle.toBmp()
         return True
 
     def on_btn_quit_clicked(self):

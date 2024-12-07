@@ -30,6 +30,7 @@ class ImageCvt():
                             ".jpg" :IMGCVT_OUT_TYPE.IMG_PNG,
                           }
 
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -58,35 +59,49 @@ class ImageCvt():
             self._output_w = output_w
             self._output_h = output_h
 
+    def set_dst_dir(self, dst_dir):
+        self._dst_dir = dst_dir
+
+    def set_src_dir(self, src_dir):
+        self._src_dir = src_dir
+
     def get_src_file_type(self, src_path):
         pass
 
+    def is_map_pic(self, val):
+        res = None
+        # res = list(self._type_map.keys())[list(self._type_map.values()).index(val)]
+        for map_str, map_key in self._type_map.items():
+            if map_key == val:
+                res = map_str
+        return res
+
     def get_str_output_type_name(self):
-        res = ""
-        if self._out_type == IMGCVT_OUT_TYPE.IMG_BMP:
-            res = ".bmp"
-        elif self._out_type == IMGCVT_OUT_TYPE.IMG_JPG:
-            res = ".jpg"
-        elif self._out_type == IMGCVT_OUT_TYPE.IMG_JPEG:
-            res = ".jpeg"
-        elif self._out_type == IMGCVT_OUT_TYPE.IMG_PNG:
-            res = ".png"
+        return self.is_map_pic(self._out_type)
 
     def toBmp(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_BMP
-        pass
+        self.cvt(IMGCVT_OUT_TYPE.IMG_BMP, 0)
+
     def toJPG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_JPG
-        pass
+
     def toJPEG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_JPEG
-        pass
+
     def toPNG(self):
         self._out_type = IMGCVT_OUT_TYPE.IMG_PNG
+
+    def cvt(self):
         pass
+
 
     def cvt(self, dst_type, src_type):
         convert_count = 0
+        if self.is_map_pic(dst_type) is None:
+            print("ImageCvt() : 转换类型错误!!!")
+            return
+
         if len(self._src_dir) != 0 and len(self._dst_dir) != 0:
             try:
                 self.dir_list = os.listdir(self._src_dir)
@@ -105,15 +120,13 @@ class ImageCvt():
                 # 获取文件扩展名
                 file_name_ex = os.path.splitext(fileName)[1]
                 # 获取文件扩展名类型
-                res = self._type_map(file_name_ex)
-
-                if not res:
-                    print("self._type_map[file_name_ex] ERROR")
+                res = file_name_ex.lower()
+                if res not in self._type_map:
+                    print("Error: 文件扩展名错误 :", fileName)
                     continue
                 else:
                     name = os.path.splitext(fileName)[0]
                     newFileName = name + self.get_str_output_type_name()
-
                     img = Image.open(self._src_dir + "/" + fileName)
                     img.save(self._dst_dir + "/" + newFileName)
                     convert_count += 1
